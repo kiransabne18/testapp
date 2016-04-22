@@ -1,0 +1,29 @@
+<%= form_for(@street_food, :html => { multipart: true }) do |f| %>
+  <% if @street_food.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@street_food.errors.count, "error") %> prohibited this street_food from being saved:</h2>
+
+      <ul>
+      <% @street_food.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :name %><br>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :address %><br>
+    <%= f.text_field :address, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :image %><br>
+    <%= f.file_field :streetfoods, class: "form-control" %>
+  </div>
+  <div class="actions">
+    <%= f.submit class: "btn btn-primary" %>
+  </div>
+<% end %>

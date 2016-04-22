@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Places</h1>
+
+<div class = "jumbotron">
+  <h2>ReviewApp is the best way to know real reviews, from foodies like you.</h2>
+  <h4>Explore the favourite diners, pastery shops, Dhabas, Food Stalls and eateries in your areas.<br>
+  Leave reviews about any place you visited, to help your friends over chossing the place to eat.</h4>
+</div>
+
+<div class="center">
+  <div class="row">
+  <% @places.each do |place| %>
+      <div class="col-sm-6 col-md-3">
+        <div class="thumbnail">
+          <%= link_to image_tag(place.placesvisited.url), place %>
+          <div class="caption">
+            <h3><%= link_to place.name.capitalize, place %></h3>
+            <p><%= place.address.capitalize %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<% if user_signed_in? %>
+<%= link_to 'Add New Places Here', new_place_path, class: "btn btn-link" %>
+<% end %>
+

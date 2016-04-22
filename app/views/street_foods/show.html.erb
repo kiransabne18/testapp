@@ -1,0 +1,123 @@
+<style>
+  table {
+    border-collapse: collapse;
+  }
+  
+  tr {
+    border-bottom: 1px solid #e3e3e3;
+  }
+</style>
+
+<link href='https://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
+<div class="container-fluid">
+  <div class="row">
+      <div class="col-md-8">
+      <%= image_tag @street_food.streetfoods_url %>   
+      <br>
+      <br>
+       <% if @reviews.blank? %>
+      <h3> No reviews Yet. Be the first to give a reviews and help others</h3>
+    <% else %>
+      <h2> Reviews.</h2>
+      <table class="table">
+        <thead>
+          <tr>
+
+            <th class="col-md-3"></th>
+            <th class="col-md-9"></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @reviews.each do |review| %>
+              <tr>
+                <td>
+                    <div class="img-rounded">
+                      <img src="<%= review.user.avatar_url %>">
+                    </div> 
+
+                  
+                    <p><%= review.created_at.strftime("%-d/%-m/%-y") %></p>
+                </td>
+
+                <td>
+                    <h4><strong>
+                        <%= "#{review.user.first_name.capitalize} #{review.user.last_name.capitalize[0]}." %>
+                    </strong>
+                    </h4>
+                      <div class="star-rating" data-score= <%= review.rating %> ></div>
+                      <h5><p><%= h(review.comment).gsub(/\n/, '<br/>').html_safe %></p></h5>
+								<%= social_share_button_tag(@street_food.reviews) %>
+
+                      <% if user_signed_in? %>
+                        <% if (review.user == current_user) || (current_user.admin?) %>
+                          <%= link_to "Edit", edit_street_food_review_path(@street_food, review) %>
+                          <%= link_to "Delete", street_food_review_path(@street_food, review), method: :delete %>
+                          <% end %>
+                        <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+    <% end %>
+    </div>
+    <br>
+    <br>
+	<div class="col-md-4">
+
+		<div class="frm"> 
+		  <%= link_to "Give Heart", like_street_food_path(@street_food), class: "btn btn-success", method: :put %>
+
+			  <%= link_to "Downvote", dislike_street_food_path(@street_food), 
+				class: "btn btn-link", method: :put %>
+		</div>
+      
+      <h2><strong>
+          <%= @street_food.name.capitalize %>
+      </strong></h2><%= social_share_button_tag(@street_food.name) %>
+
+		<div class="detail-overview-hearts">
+                <h4><i class="glyphicon glyphicon-heart"></i> <strong><%= @street_food.get_upvotes.size %></strong> people love it
+            </h4></div>
+            <br>
+    
+            <br>
+    <div class="star-rating" data-score= <%= @avg_rating %> ></div>
+    <p><%= "#{@reviews.length} reviews" %></p>
+
+    <p>
+      <strong>Address:</strong>
+      <%= @street_food.address.capitalize %>
+    </p>
+
+    <%= link_to "Write a Review", new_street_food_review_path(@street_food), class: "btn btn-primary" %>
+
+    <br>
+    <br>
+
+    <iframe
+    width="230"
+    height="230"
+    frameborder="1" style="border:1"
+    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDJ7BphNq_tVYF9JucYg93sM_xkeuMwR0w
+      &q=<%= @street_food.address.parameterize %>&zoom=14" allowfullscreen>
+  </iframe>
+
+  <br>
+  <br>
+</div>
+</div>
+</div>
+<%= link_to 'Edit', edit_street_food_path(@street_food) %> |
+<%= link_to 'Back', street_foods_path %>
+
+<script>
+  $('.star-rating').raty({
+    path: 'http://review1.blob.core.windows.net/stars', 
+    readOnly: true,
+    score: function() {
+      return $(this).attr('data-score')
+    }
+  });
+</script>

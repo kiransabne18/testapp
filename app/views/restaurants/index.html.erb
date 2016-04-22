@@ -1,0 +1,73 @@
+<p id="notice"><%= notice %></p>
+
+<div class = "jumbotron">
+  <h2>ReviewApp is the best way to know real reviews, from foodies like you.</h2>
+  <h4>Explore the favourite diners, pastery shops, Dhabas, Food Stalls and eateries in your areas.<br>
+  Leave reviews about any place you visited, to help your friends over chossing the place to eat.</h4>
+</div>
+
+<div class="center">
+  <div class="row">
+  <% @restaurants.each do |restaurant| %>
+      <div class="col-sm-6 col-md-3">
+        <div class="thumbnail">
+          <%= link_to image_tag(restaurant.image.url), restaurant %>
+          <div class="caption">
+            <h3><%= link_to restaurant.name.capitalize, restaurant %></h3>
+            <p><%= restaurant.description.capitalize %></p>
+            <p><%= restaurant.city.capitalize %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<% if user_signed_in? && current_user.admin? %>
+
+  <table class="table table-hover table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Address</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Zipcode</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Parking</th>
+        <% if user_signed_in? && current_user.admin? %>
+          <th colspan="2"></th>
+        <% end %>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @restaurants.each do |restaurant| %>
+        <tr>
+          <td><%= link_to restaurant.name, restaurant %></td>
+          <td><%= restaurant.description %></td>
+          <td><%= restaurant.address %></td>
+          <td><%= restaurant.city %></td>
+          <td><%= restaurant.state %></td>
+          <td><%= restaurant.zipcode %></td>
+          <td><%= restaurant.phone %></td>
+          <td><%= restaurant.email %></td>
+          <td><%= restaurant.parking %></td>
+            <td><%= link_to 'Edit', edit_restaurant_path(restaurant) %></td>
+          <td><%= link_to 'Destroy', restaurant, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+<br>
+
+<% if user_signed_in? %>
+<%= link_to 'Can\'t find the place you visited? You can add it here New Restaurant', new_restaurant_path, class: "btn btn-link" %>
+<% end %>
+
+<%= image_tag "http://review1.blob.core.windows.net/imagebucket/sketch.jpg" %>
+

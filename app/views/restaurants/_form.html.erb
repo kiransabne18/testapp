@@ -1,0 +1,109 @@
+<%= form_for(@restaurant, :html => { multipart: true }) do |f| %>
+  <% if @restaurant.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      <h4><%= pluralize(@restaurant.errors.count, "error") %> prohibited this restaurant from being saved:</h4>
+
+      <ul>
+      <% @restaurant.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if user_signed_in? && current_user.admin? %>
+
+  <div class="form-group">
+    <%= f.label :name %><br>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :description %><br>
+    <%= f.text_field :description, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :address %><br>
+    <%= f.text_field :address, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :city %><br>
+    <%= f.text_field :city, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :state %><br>
+    <%= f.text_field :state, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :zipcode %><br>
+    <%= f.text_field :zipcode, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :phone %><br>
+    <%= f.text_field :phone, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :email %><br>
+    <%= f.text_field :email, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :parking %><br>
+    <%= f.text_field :parking, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :image %><br>
+    <%= f.file_field :image, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :speciality %><br>
+    <%= f.text_field :speciality, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :reservation %><br>
+    <%= f.text_field :reservation, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :delivery %><br>
+    <%= f.text_field :delivery, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :ambience %><br>
+    <%= f.text_field :ambience, class: "form-control" %>
+  </div>
+  <div class="actions">
+    <%= f.submit class: "btn btn-primary" %>
+  </div>
+
+    <% else %>
+
+    <div class="form-group">
+    <%= f.label :name %><br>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :description %><br>
+    <%= f.text_field :description, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :address %><br>
+    <%= f.text_field :address, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :city %><br>
+    <%= f.text_field :city, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :state %><br>
+    <%= f.text_field :state, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :zipcode %><br>
+    <%= f.text_field :zipcode, class: "form-control" %>
+  </div>
+
+  <div class="actions">
+      <%= f.submit class: "btn btn-primary" %>
+    </div>
+
+<% end %>
+<% end %>

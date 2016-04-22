@@ -1,0 +1,178 @@
+<style>
+  table {
+    border-collapse: collapse;
+  }
+  
+  tr {
+    border-bottom: 1px solid #e3e3e3;
+  }
+</style>
+
+<link href='https://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
+<div class="container-fluid">
+  <div class="row">
+      <div class="col-md-8">
+        <%= image_tag @restaurant.image_url %>   
+      <br>
+      <br>
+     <% if @reviews.blank? %>
+      <h3> No reviews Yet. Be the first to give a reviews and help others</h3>
+    <% else %>
+      <h2> Reviews.</h2>
+      <table class="table">
+        <thead>
+          <tr>
+
+            <th class="col-md-3"></th>
+            <th class="col-md-9"></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @reviews.each do |review| %>
+              <tr>
+                <td>
+                    <div class="img-rounded">
+                      <img src="<%= review.user.avatar_url %>">
+                    </div> 
+
+                  
+                    <p><%= review.created_at.strftime("%-d/%-m/%-y") %></p>
+                </td>
+
+                <td>
+                    <h4><strong>
+                        <%= "#{review.user.first_name.capitalize} #{review.user.last_name.capitalize[0]}." %>
+                    </strong>
+                    </h4>
+                      <div class="star-rating" data-score= <%= review.rating %> ></div>
+                      <h5><p><%= h(review.comment).gsub(/\n/, '<br/>').html_safe %></p></h5>
+								<%= social_share_button_tag(@restaurant.reviews) %>
+
+                      <% if user_signed_in? %>
+                        <% if (review.user == current_user) || (current_user.admin?) %>
+                          <%= link_to "Edit", edit_restaurant_review_path(@restaurant, review) %>
+                          <%= link_to "Delete", restaurant_review_path(@restaurant, review), method: :delete %>
+                          <% end %>
+                        <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+    <% end %>
+    </div>
+    <br>
+    <br>
+    <div class="col-md-4">
+     <div class="frm"> 
+      <%= link_to "Give Heart", like_restaurant_path(@restaurant), class: "btn btn-success", method: :put %>
+
+		  <%= link_to "Downvote", dislike_restaurant_path(@restaurant), 
+      class: "btn btn-link", method: :put %>
+    </div>
+      
+      <h2><strong>
+          <%= @restaurant.name.capitalize %>
+      </strong></h2><%= social_share_button_tag(@restaurant.name) %>
+
+
+    <div class="detail-overview-hearts">
+                <h4><i class="glyphicon glyphicon-heart"></i> <strong><%= @restaurant.get_upvotes.size %></strong> people love it
+            </h4></div>
+            <br>
+    <div class="star-rating" data-score= <%= @avg_rating %> ></div>
+    <p><%= "#{@reviews.length} reviews" %></p>
+
+    <p>
+      <strong>Description:</strong>
+      <%= @restaurant.description.capitalize %>
+    </p>
+
+    <p>
+      <strong>City:</strong>
+      <%= @restaurant.city.capitalize %>
+    </p>
+
+    <p>
+      <strong>State:</strong>
+      <%= @restaurant.state.capitalize %>
+    </p>
+
+    <p>
+      <strong>Zipcode:</strong>
+      <%= @restaurant.zipcode %>
+    </p>
+
+    <p>
+      <strong>Phone:</strong>
+      <%= @restaurant.phone %>
+    </p>
+
+    <p>
+      <strong>Email:</strong>
+      <%= @restaurant.email %>
+    </p>
+
+    <p>
+      <strong>Parking:</strong>
+      <%= @restaurant.parking %>
+    </p>
+
+    <p>
+      <strong>Speciality:</strong>
+      <%= @restaurant.speciality %>
+    </p>
+
+    <%= link_to "Write a Review", new_restaurant_review_path(@restaurant), class: "btn btn-primary" %>
+
+    <br>
+    <br>
+
+    <iframe
+    width="230"
+    height="230"
+    frameborder="1" style="border:1"
+    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDJ7BphNq_tVYF9JucYg93sM_xkeuMwR0w
+      &q=<%= @restaurant.address.parameterize %>&zoom=14" allowfullscreen>
+  </iframe>
+
+  <br>
+  <br>
+  <p>
+      <strong>Take Reservation:</strong>
+      <%= @restaurant.reservation %>
+    </p>
+
+    <p>
+      <strong>Delivery:</strong>
+      <%= @restaurant.delivery %>
+    </p>
+
+    <p>
+      <strong>Ambience:</strong>
+      <%= @restaurant.ambience %>
+    </p>
+
+  </div>
+</div>
+</div>
+
+    </div>
+  </div>
+  <%= link_to 'Edit', edit_restaurant_path(@restaurant) %> |
+<%= link_to 'Back', restaurants_path %>
+</div>
+
+
+
+
+<script>
+  $('.star-rating').raty({
+    path: 'http://review1.blob.core.windows.net/stars', 
+    readOnly: true,
+    score: function() {
+      return $(this).attr('data-score')
+    }
+  });
+</script>
