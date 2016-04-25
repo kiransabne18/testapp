@@ -43,16 +43,13 @@ ActiveRecord::Schema.define(version: 20160421210106) do
 
   create_table "reviews", force: :cascade do |t|
     t.integer  "rating"
-    t.string   "comment"
+    t.text     "comment"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
     t.integer  "user_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.integer  "reviewable_id"
-    t.string   "reviewable_type"
+    t.integer  "restaurant_id"
+    t.string   "taken"
   end
-
-  add_index "reviews", ["reviewable_id", "reviewable_type"], name: "index_reviews_on_reviewable_id_and_reviewable_type"
-  add_index "reviews", ["user_id"], name: "index_reviews_on_user_id"
 
   create_table "street_foods", force: :cascade do |t|
     t.string   "name"
